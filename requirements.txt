@@ -5,3 +5,6 @@ opencv-python
 ultralytics
 torchtext
 nltk
+evaluate
+transformers
+rouge_score
