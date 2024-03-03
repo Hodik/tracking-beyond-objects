@@ -1,7 +1,5 @@
 from copy import deepcopy
 
-import torch
-
 from ultralytics.utils.plotting import Annotator, colors
 from ultralytics.engine.results import Results
 
