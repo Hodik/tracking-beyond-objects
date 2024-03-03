@@ -21,7 +21,7 @@ class TaskInfo:
         delete task.
     """
 
-    def __init__(self):
+    def __init__(self, clip_vis_length = -1, frames_inds = None, ratio = None):
         self.id = -1
 
         # raw frames, used as human detector input, draw predictions input
@@ -30,7 +30,7 @@ class TaskInfo:
 
         # stdet params
         self.processed_frames = None  # model inputs
-        self.frames_inds = None  # select frames from processed frames
+        self.frames_inds = frames_inds  # select frames from processed frames
         self.img_shape = None  # model inputs, processed frame shape
         # `action_preds` is `list[list[tuple]]`. The outer brackets indicate
         # different bboxes and the intter brackets indicate different action
@@ -40,10 +40,11 @@ class TaskInfo:
         # human bboxes with the format (xmin, ymin, xmax, ymax)
         self.display_bboxes = None  # bboxes coords for self.frames
         self.stdet_bboxes = None  # bboxes coords for self.processed_frames
-        self.ratio = None  # processed_frames.shape[1::-1]/frames.shape[1::-1]
+        self.ratio = ratio  # processed_frames.shape[1::-1]/frames.shape[1::-1]
 
         # for each clip, draw predictions on clip_vis_length frames
-        self.clip_vis_length = -1
+        self.clip_vis_length = clip_vis_length
+        self.keyframe = None
 
     def add_frames(self, idx, frames, processed_frames):
         """Add the clip and corresponding id.
