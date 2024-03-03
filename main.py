@@ -30,15 +30,17 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model = YOLO("yolov8n.pt")
 model.to(device)
 
-cfg = 'mmaction2/configs/detection/slowonly/slowonly_kinetics400-pretrained-r101_8xb16-8x8x1-20e_ava21-rgb.py'
-checkpoint = 'https://download.openmmlab.com/mmaction/detection/ava/slowonly_omnisource_pretrained_r101_8x8x1_20e_ava_rgb/slowonly_omnisource_pretrained_r101_8x8x1_20e_ava_rgb_20201217-16378594.pth'
+cfg = "mmaction2/configs/detection/slowonly/slowonly_kinetics400-pretrained-r101_8xb16-8x8x1-20e_ava21-rgb.py"
+checkpoint = "https://download.openmmlab.com/mmaction/detection/ava/slowonly_omnisource_pretrained_r101_8x8x1_20e_ava_rgb/slowonly_omnisource_pretrained_r101_8x8x1_20e_ava_rgb_20201217-16378594.pth"
 action_config = Config.fromfile(cfg)
 clip_vis_length = 8
 predict_stepsize = 40
 stdet_input_shortside = 256
 score_thr = 0.4
-label_map = 'mmaction2/tools/data/ava/label_map.txt'
-stdet_predictor = StdetPredictor(action_config, checkpoint, device, score_thr, label_map)
+label_map = "mmaction2/tools/data/ava/label_map.txt"
+stdet_predictor = StdetPredictor(
+    action_config, checkpoint, device, score_thr, label_map
+)
 
 caps = [cv2.VideoCapture(camera) for camera in cameras]
 
@@ -137,6 +139,7 @@ def main():
                 preds.append(zip(track_ids, cam_task.action_preds))
         actions_buffer = merge_action_buffers(preds)        
         read_id += 1
+
 
 if __name__ == "__main__":
     try:

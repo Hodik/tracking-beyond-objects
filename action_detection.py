@@ -80,9 +80,8 @@ class TaskInfo:
         datasample.proposals = InstanceData(bboxes=self.stdet_bboxes)
         datasample.set_metainfo(dict(img_shape=self.img_shape))
 
-        return dict(
-            inputs=input_tensor, data_samples=[datasample], mode='predict')
-    
+        return dict(inputs=input_tensor, data_samples=[datasample], mode="predict")
+
 
 class StdetPredictor:
     """Wrapper for MMAction2 spatio-temporal action models.
@@ -112,14 +111,13 @@ class StdetPredictor:
         # init label map, aka class_id to class_name dict
         with open(label_map_path) as f:
             lines = f.readlines()
-        lines = [x.strip().split(': ') for x in lines]
+        lines = [x.strip().split(": ") for x in lines]
         self.label_map = {int(x[0]): x[1] for x in lines}
         try:
-            if config['data']['train']['custom_classes'] is not None:
+            if config["data"]["train"]["custom_classes"] is not None:
                 self.label_map = {
                     id + 1: self.label_map[cls]
-                    for id, cls in enumerate(config['data']['train']
-                                             ['custom_classes'])
+                    for id, cls in enumerate(config["data"]["train"]["custom_classes"])
                 }
         except KeyError:
             pass
@@ -142,8 +140,9 @@ class StdetPredictor:
                 continue
             for bbox_id in range(task.stdet_bboxes.shape[0]):
                 if scores[bbox_id][class_id] > self.score_thr:
-                    preds[bbox_id].append((self.label_map[class_id],
-                                           scores[bbox_id][class_id].item()))
+                    preds[bbox_id].append(
+                        (self.label_map[class_id], scores[bbox_id][class_id].item())
+                    )
 
         # update task
         # `preds` is `list[list[tuple]]`. The outer brackets indicate
@@ -152,4 +151,3 @@ class StdetPredictor:
         task.add_action_preds(preds)
 
         return task
-
